@@ -71,8 +71,8 @@
         <button class="tab active" data-tab="report" role="tab" id="tab-report">Reportes</button>
         <button class="tab hidden" data-tab="users" id="tab-users" role="tab">Usuarios</button>
         <form id="logoutForm" method="post" action="/auth/logout">
-  <button class="tab" style="border-radius:12px">Salir</button>
-</form>
+          <button class="tab" style="border-radius:12px">Salir</button>
+        </form>
       </div>
     </div>
   </div>
@@ -235,6 +235,29 @@ async function api(path, opts={}){
   const ct = res.headers.get('content-type')||''; return ct.includes('application/json') ? res.json() : res;
 }
 
+/* ===== NUEVO: descarga autenticada para reportes ===== */
+async function downloadFromApi(path, filename) {
+  try {
+    const res = await fetch(API_BASE + path, { credentials: 'include' });
+    if (!res.ok) {
+      const txt = await res.text();
+      alert(txt || 'Error al generar el archivo');
+      return;
+    }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename || '';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  } catch (e) {
+    alert(e?.message || 'Error de red');
+  }
+}
+
 /* ======= Autenticación y control de tabs por rol ======= */
 async function getMe(){
   try{
@@ -256,8 +279,8 @@ async function getMe(){
       activateTab('report');
     }
   }catch{
-  location.href = `${GH_BASE}/login.html`;
-}
+    location.href = `${GH_BASE}/login.html`;
+  }
 }
 function activateTab(tab){
   $$('.tab').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
@@ -592,8 +615,18 @@ async function loadReportPeople(){
   }
 }
 document.getElementById('rr-group').addEventListener('change', ()=>{ loadReportPeople(); });
-document.getElementById('rp-csv').addEventListener('click', ()=>{ const d=document.getElementById('rp-date').value; if(!d) return alert('Elige fecha'); window.open(`${API_BASE}/reports/daily.csv?date_str=${d}`, '_blank'); });
-document.getElementById('rp-pdf').addEventListener('click', ()=>{ const d=document.getElementById('rp-date').value; if(!d) return alert('Elige fecha'); window.open(`${API_BASE}/reports/daily.pdf?date_str=${d}`, '_blank'); });
+
+/* ===== CAMBIO: usar descarga autenticada en lugar de window.open ===== */
+document.getElementById('rp-csv').addEventListener('click', ()=>{ 
+  const d=document.getElementById('rp-date').value; 
+  if(!d) return alert('Elige fecha'); 
+  downloadFromApi(`/reports/daily.csv?date_str=${d}`, `reporte_${d}.csv`); 
+});
+document.getElementById('rp-pdf').addEventListener('click', ()=>{ 
+  const d=document.getElementById('rp-date').value; 
+  if(!d) return alert('Elige fecha'); 
+  downloadFromApi(`/reports/daily.pdf?date_str=${d}`, `reporte_${d}.pdf`); 
+});
 function buildRangeQS(){
   const start = document.getElementById('rr-start').value; const end = document.getElementById('rr-end').value;
   if(!start || !end){ alert('Selecciona inicio y fin'); return null; }
@@ -605,8 +638,14 @@ function buildRangeQS(){
   const q=document.getElementById('rr-q')?.value?.trim(); if(q) p.set('q', q);
   return p.toString();
 }
-document.getElementById('rr-csv').addEventListener('click', ()=>{ const qs = buildRangeQS(); if(!qs) return; window.open(`${API_BASE}/reports/range.csv?${qs}`, '_blank'); });
-document.getElementById('rr-pdf').addEventListener('click', ()=>{ const qs = buildRangeQS(); if(!qs) return; window.open(`${API_BASE}/reports/range.pdf?${qs}`, '_blank'); });
+document.getElementById('rr-csv').addEventListener('click', ()=>{ 
+  const qs = buildRangeQS(); if(!qs) return; 
+  downloadFromApi(`/reports/range.csv?${qs}`, 'reporte_rango.csv'); 
+});
+document.getElementById('rr-pdf').addEventListener('click', ()=>{ 
+  const qs = buildRangeQS(); if(!qs) return; 
+  downloadFromApi(`/reports/range.pdf?${qs}`, 'reporte_rango.pdf'); 
+});
 
 /* ======= Usuarios (solo ADMIN) ======= */
 async function loadUsers(){
