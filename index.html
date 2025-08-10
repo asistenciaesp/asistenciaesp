@@ -1,717 +1,103 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Asistencia Danza — App (roles + gestión de usuarios)</title>
-<style>
-  :root{--bg:#0e1117;--panel:#151a23;--muted:#a0a8b8;--text:#e7eaf0;--border:#22283a;--pill:#0f1422}
-  *{box-sizing:border-box}
-  body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
-  header{position:sticky;top:0;background:rgba(14,17,23,.9);backdrop-filter:blur(6px);border-bottom:1px solid var(--border);z-index:10}
-  .wrap{max-width:1100px;margin:0 auto;padding:16px}
-  .tabs{display:flex;gap:8px;flex-wrap:wrap}
-  .tab{border:1px solid var(--border);background:var(--pill);color:var(--text);padding:10px 14px;border-radius:999px;cursor:pointer}
-  .tab.active{background:linear-gradient(135deg,#4f46e5,#06b6d4);border-color:transparent}
-  .panel{background:#151a23;border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 6px 24px rgba(0,0,0,.25);margin-top:16px}
-  input,select,button{font:inherit}
-  input[type=text], input[type=date], input[type=time], input[type=tel], input[type=password], select{
-    width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:#0e1320;color:var(--text)
-  }
-  .btn{border:1px solid var(--border);background:#0e1220;color:var(--text);padding:10px 12px;border-radius:12px;cursor:pointer}
-  .btn.primary{background:linear-gradient(135deg,#4f46e5,#06b6d4);border:0}
-  .btn.ghost{background:transparent}
-  .btn[disabled]{opacity:.6;cursor:not-allowed}
-  .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#0d1428;border:1px solid var(--border);color:#a0a8b8;font-size:12px}
-  .muted{color:#a0a8b8}
-  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  .grid{display:grid;gap:12px}
-  .cols-4{grid-template-columns:repeat(4,1fr)}
-  .right{text-align:right}
-  table{width:100%;border-collapse:collapse}
-  th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left}
-  .desktop-only{display:block}
-  .mobile-only{display:none}
-  .card{border:1px solid var(--border);border-radius:12px;padding:12px;background:#0e1320}
-  .card h4{margin:0 0 8px 0;font-size:16px}
-  .card .kv{display:grid;grid-template-columns:110px 1fr;gap:6px 10px;font-size:14px;margin:6px 0}
-  .card .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
-  .chip{padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:#0e1320;font-size:13px}
-  .hidden{display:none}
-  .pill{padding:4px 8px;border-radius:999px;border:1px solid var(--border);font-size:12px;display:inline-block}
-  .s-P{background:#052e1e;border-color:#0e4429;color:#7ee787}
-  .s-T{background:#331a00;border-color:#5a3f00;color:#ffd166}
-  .s-A{background:#2a0b0b;border-color:#512020;color:#ff7b72}
-  .s-J{background:#102235;border-color:#1f3b5b;color:#79c0ff}
-  tr.highlight-P{background:rgba(16,185,129,.06)}
-  tr.highlight-T{background:rgba(245,158,11,.06)}
-  tr.highlight-A{background:rgba(239,68,68,.06)}
-  tr.highlight-J{background:rgba(59,130,246,.06)}
-  @media (max-width: 720px){
-    .cols-4{grid-template-columns:1fr}
-    .desktop-only{display:none}
-    .mobile-only{display:grid;gap:10px;margin-top:10px}
-  }
-
-  .search-wide{min-width:220px;width:320px;max-width:100%}
-  @media (min-width: 900px){.search-wide{width:360px}}
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      background-color: #0f111a; 
+      color: white; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      height: 100vh; 
+    }
+    .login-container { 
+      background-color: #151821; 
+      padding: 20px; 
+      border-radius: 10px; 
+      box-shadow: 0 0 10px rgba(0,0,0,.5); 
+      width: 300px; 
+      text-align: center;
+    }
+    h2 { margin-bottom: 10px; color: white; }
+    p { font-size: .9em; color: #aaa; }
+    input { 
+      width: 80%; 
+      padding: 8px; 
+      margin-bottom: 12px; 
+      border-radius: 8px; 
+      border: 1px solid #283041; 
+      background-color: #0f111a; 
+      color: white; 
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    button { 
+      width: 80%; 
+      padding: 10px; 
+      border: none; 
+      background: linear-gradient(to right,#4f46e5,#06b6d4); 
+      color: white; 
+      font-weight: bold; 
+      cursor: pointer; 
+      border-radius: 8px; 
+    }
+    button:hover { opacity: .9; }
+    .error { 
+      color: #ff6b6b; 
+      font-size: .9em; 
+      margin-bottom: 10px; 
+      min-height: 1em; 
+    }
+  </style>
+  <script>
+    const API_BASE = "https://especially-posters-po-ata.trycloudflare.com";
+    const GH_BASE = location.pathname.startsWith('/asistenciaesp/')
+      ? '/asistenciaesp'
+      : '';
+  </script>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <div class="row" style="justify-content:space-between">
-      <div class="row"><strong>Asistencia Danza</strong><span class="badge" id="who">—</span></div>
-      <div class="tabs" role="tablist">
-        <button class="tab" data-tab="dancers" role="tab" id="tab-dancers">Danzarinas</button>
-        <button class="tab" data-tab="classes" role="tab" id="tab-classes">Clases</button>
-        <button class="tab" data-tab="rollcall" role="tab" id="tab-rollcall">Pasar lista</button>
-        <button class="tab active" data-tab="report" role="tab" id="tab-report">Reportes</button>
-        <button class="tab hidden" data-tab="users" id="tab-users" role="tab">Usuarios</button>
-        <form id="logoutForm" method="post" action="/auth/logout">
-          <button class="tab" style="border-radius:12px">Salir</button>
-        </form>
-      </div>
-    </div>
+  <div class="login-container">
+    <h2>Iniciar sesión</h2>
+    <p>Ingresa con tu usuario y contraseña para continuar.</p>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Usuario" required>
+      <input type="password" id="password" placeholder="Contraseña" required>
+      <div class="error" id="errorMsg"></div>
+      <button type="submit">Entrar</button>
+    </form>
   </div>
-</header>
 
-<div id="toast" style="position:fixed;right:16px;bottom:16px;z-index:9999;display:none;background:#111827;color:#e5e7eb;border:1px solid #374151;padding:10px 14px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.35)"></div>
-
-<main class="wrap">
-  <!-- DANZARINAS (solo ADMIN visible) -->
-  <section id="view-dancers" class="panel" role="tabpanel" hidden>
-    <h2 style="margin-top:0">Danzarinas</h2>
-    <div class="grid cols-4">
-      <div><label>Nombre<input id="dn-name" type="text" placeholder="Ej. Ana Pérez"></label></div>
-      <div><label>Grupo<select id="dn-group"><option value="DANZARINA">Danzarina</option><option value="MAESTRA">Maestra</option></select></label></div>
-      <div><label>Día asignado<select id="dn-days"><option value="LUNES">Lunes</option><option value="MIERCOLES">Miércoles</option><option value="AMBOS" selected>Ambos</option></select></label></div>
-      <div><label>Teléfono (WhatsApp)<input id="dn-phone" type="tel" placeholder="8091234567"></label></div>
-      <div class="row" style="grid-column:1/-1"><button id="addDancer" class="btn primary" style="min-width:160px">Agregar</button></div>
-    </div>
-    <div class="row" style="margin-top:12px">
-      <input id="search" type="text" placeholder="Buscar por nombre" style="max-width:320px;flex:1">
-      <select id="filterGroup"><option value="">Todos</option><option value="DANZARINA">Danzarinas</option><option value="MAESTRA">Maestras</option></select>
-      <select id="filterDay"><option value="">Todos los días</option><option value="LUNES">Lunes</option><option value="MIERCOLES">Miércoles</option><option value="AMBOS">Ambos</option></select>
-    </div>
-    <div class="desktop-only" style="margin-top:12px">
-      <table>
-        <thead><tr><th>Nombre</th><th>Grupo</th><th>Día</th><th>Teléfono</th><th class="right">Acciones</th></tr></thead>
-        <tbody id="dancersBody"></tbody>
-      </table>
-    </div>
-    <div class="mobile-only" id="dancersCards"></div>
-  </section>
-
-  <!-- CLASES (solo ADMIN visible) -->
-  <section id="view-classes" class="panel" role="tabpanel" hidden>
-    <h2 style="margin-top:0">Clases</h2>
-    <div class="grid cols-4">
-      <div><label>Fecha<input id="cls-date" type="date"></label></div>
-      <div><label>Hora<input id="cls-time" type="time" value="18:00"></label></div>
-      <div><label>Grupo<select id="cls-group"><option value="DANZARINA">Danzarinas</option><option value="MAESTRA">Maestras</option><option value="TODOS">Todos</option></select></label></div>
-      <div class="row" style="grid-column:1/-1"><button id="addClass" class="btn primary">Crear clase</button><button id="genRecurring" class="btn">Generar Lunes/Miércoles (60 días)</button></div>
-    </div>
-    <div class="desktop-only" style="margin-top:12px">
-      <table><thead><tr><th>Fecha</th><th>Hora</th><th>Grupo</th><th class="right">Acciones</th></tr></thead><tbody id="classesBody"></tbody></table>
-    </div>
-    <div class="mobile-only" id="classesCards"></div>
-  </section>
-
-  <!-- PASAR LISTA (solo ADMIN visible) -->
-  <section id="view-rollcall" class="panel" role="tabpanel" hidden>
-    <h2 style="margin-top:0">Pasar lista</h2>
-    <div class="row">
-      <label>Clase<select id="rc-class"></select></label>
-      <span id="rc-day" class="badge">—</span>
-      <label>Filtrar grupo<select id="rc-filter"><option value="">Todos</option><option value="DANZARINA">Danzarinas</option><option value="MAESTRA">Maestras</option></select></label>
-      <label>Filtrar estado
-        <select id="rc-status-filter">
-          <option value="">Todos</option>
-          <option value="P">Presente</option>
-          <option value="T">Tarde</option>
-          <option value="A">Ausente</option>
-          <option value="J">Justificada</option>
-        </select>
-      </label>
-      <input id="rc-search" type="text" placeholder="Buscar nombre..." style="max-width:260px;flex:1" class="search-wide">
-      <button id="markAllP" class="btn">Todas Presente</button>
-      <button id="markAllA" class="btn">Todas Ausente</button>
-      <button id="markAllJ" class="btn">Todas Justificada</button>
-      <button id="markAllT" class="btn">Todas Tarde</button>
-      <button id="saveAll" class="btn primary">Guardar todo</button>
-    </div>
-    <div id="summary" class="chips"></div>
-    <div class="desktop-only" style="margin-top:12px">
-      <table><thead><tr><th>Nombre</th><th>Grupo</th><th>Estado</th><th>Nota</th><th class="right">Acciones</th></tr></thead><tbody id="rcBody"></tbody></table>
-    </div>
-    <div class="mobile-only" id="rcCards"></div>
-  </section>
-
-  <!-- REPORTES (visible para ADMIN y REPORT) -->
-  <section id="view-report" class="panel" role="tabpanel">
-    <h2 style="margin-top:0">Reportes</h2>
-    <div class="row">
-      <strong>Diario</strong>
-      <label>Fecha<input id="rp-date" type="date"></label>
-      <button id="rp-csv" class="btn">CSV</button>
-      <button id="rp-pdf" class="btn">PDF</button>
-    </div>
-    <hr style="border:0;border-top:1px solid var(--border);margin:12px 0">
-    <div class="row">
-      <strong>Rango</strong>
-      <label>Inicio<input id="rr-start" type="date"></label>
-      <label>Fin<input id="rr-end" type="date"></label>
-    </div>
-    <div class="row" style="margin-top:8px">
-      <label>Grupo
-        <select id="rr-group"><option value="">Todos</option><option value="DANZARINA">Danzarinas</option><option value="MAESTRA">Maestras</option></select>
-      </label>
-      <label>Día asignado
-        <select id="rr-day"><option value="">Todos</option><option value="LUNES">Lunes</option><option value="MIERCOLES">Miércoles</option></select>
-      </label>
-      <label>Estado
-        <select id="rr-status"><option value="">Todos</option><option value="P">Presente</option><option value="T">Tarde</option><option value="A">Ausente</option><option value="J">Justificada</option></select>
-      </label>
-      <label>Persona
-        <select id="rr-person"><option value="">Todas</option></select>
-      </label>
-      <input id="rr-q" type="text" placeholder="Buscar nombre (opcional)" style="max-width:220px">
-      <button id="rr-csv" class="btn">CSV (rango)</button>
-      <button id="rr-pdf" class="btn">PDF (rango)</button>
-    </div>
-    <div class="muted" style="margin-top:6px">
-      El rango aplica la misma lógica que los diarios: si hay clase y la persona es de ese día/grupo pero no fichó, figura como <b>Ausente</b>.
-    </div>
-  </section>
-
-  <!-- USUARIOS (solo ADMIN) -->
-  <section id="view-users" class="panel" role="tabpanel" hidden>
-    <h2 style="margin-top:0">Administración de usuarios</h2>
-    <div class="grid cols-4">
-      <div><label>Usuario<input id="u-username" type="text" placeholder="ej: report1"></label></div>
-      <div><label>Contraseña<input id="u-password" type="password" placeholder="••••••••"></label></div>
-      <div><label>Rol
-        <select id="u-role">
-          <option value="REPORT">REPORT (solo reportes)</option>
-          <option value="ADMIN">ADMIN (control total)</option>
-        </select>
-      </label></div>
-      <div class="row" style="grid-column:1/-1"><button id="u-create" class="btn primary">Crear usuario</button></div>
-    </div>
-
-    <h3 style="margin:16px 0 8px">Usuarios existentes</h3>
-    <div class="desktop-only">
-      <table>
-        <thead><tr><th>Usuario</th><th>Rol</th><th class="right">Acciones</th></tr></thead>
-        <tbody id="u-body"></tbody>
-      </table>
-    </div>
-    <div class="mobile-only" id="u-cards"></div>
-  </section>
-</main>
-
-<script>
-// URL de tu backend en Cloudflare Tunnel
-const API_BASE = "https://mn-trio-allowance-breaks.trycloudflare.com";
-// URL base pública en GitHub Pages para redirecciones
-const GH_BASE  = "https://asistenciaesp.github.io/asistenciaesp";
-const $ = (s,root=document)=>root.querySelector(s);
-const $$ = (s,root=document)=>Array.from(root.querySelectorAll(s));
-let SESSION = {username:null, role:null};
-let isMobile = window.matchMedia('(max-width: 720px)').matches;
-
-function toast(msg, ok=true){
-  const el = document.getElementById('toast');
-  el.style.display='block'; el.style.borderColor= ok ? '#10b981' : '#ef4444';
-  el.textContent = (ok?'✓ ':'✗ ') + msg;
-  clearTimeout(toast._t); toast._t=setTimeout(()=>{ el.style.display='none'; }, 1700);
-}
-async function api(path, opts={}){
-  const res = await fetch(API_BASE + path, { headers: { 'Content-Type': 'application/json' }, credentials:'include', ...opts });
-  if(!res.ok){ const t = await res.text(); throw new Error(t || res.statusText); }
-  const ct = res.headers.get('content-type')||''; return ct.includes('application/json') ? res.json() : res;
-}
-
-/* ===== NUEVO: descarga autenticada para reportes ===== */
-async function downloadFromApi(path, filename) {
-  try {
-    const res = await fetch(API_BASE + path, { credentials: 'include' });
-    if (!res.ok) {
-      const txt = await res.text();
-      alert(txt || 'Error al generar el archivo');
-      return;
-    }
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename || '';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  } catch (e) {
-    alert(e?.message || 'Error de red');
-  }
-}
-
-/* ======= Autenticación y control de tabs por rol ======= */
-async function getMe(){
-  try{
-    const me = await api('/auth/me'); SESSION = me;
-    document.getElementById('who').textContent = `${me.username} — ${me.role}`;
-    // Mostrar/ocultar pestañas según rol
-    if(me.role === 'ADMIN'){
-      document.getElementById('tab-users').classList.remove('hidden');
-      document.getElementById('tab-dancers').classList.remove('hidden');
-      document.getElementById('tab-classes').classList.remove('hidden');
-      document.getElementById('tab-rollcall').classList.remove('hidden');
-    }else{
-      // REPORT: solo Reportes
-      document.getElementById('tab-users').classList.add('hidden');
-      document.getElementById('tab-dancers').classList.add('hidden');
-      document.getElementById('tab-classes').classList.add('hidden');
-      document.getElementById('tab-rollcall').classList.add('hidden');
-      // Asegurar que Reportes quede activo
-      activateTab('report');
-    }
-  }catch{
-    location.href = `${GH_BASE}/login.html`;
-  }
-}
-function activateTab(tab){
-  $$('.tab').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
-  $$('[role=tabpanel]').forEach(v=>v.hidden = !v.id.endsWith(tab));
-  if(tab==='dancers') loadDancers();
-  if(tab==='classes') loadClasses();
-  if(tab==='rollcall') { loadRCClasses(); renderRollcall(); }
-  if(tab==='report') loadReportPeople();
-  if(tab==='users') loadUsers();
-}
-$$('.tab').forEach(b=>b.addEventListener('click',(e)=>{
-  const t = b.dataset.tab;
-  if(t==='users' && SESSION.role!=='ADMIN'){ e.preventDefault(); return; }
-  if((t==='dancers'||t==='classes'||t==='rollcall') && SESSION.role!=='ADMIN'){ e.preventDefault(); return; }
-  activateTab(t);
-}));
-
-/* ======= Danzarinas (ADMIN) ======= */
-function btn(text, handler, variant=''){
-  const b=document.createElement('button'); b.className='btn'+(variant?' '+variant:''); b.textContent=text;
-  b.onclick = async ()=>{ try{ b.disabled=true; await handler(); } catch(e){ toast(e.message||'Error', false);} finally{ b.disabled=false; } };
-  return b;
-}
-async function loadDancers(){
-  const q = $('#search')?.value?.trim()||''; const g = $('#filterGroup')?.value||''; const d = $('#filterDay')?.value||'';
-  const params = new URLSearchParams(); if(q) params.set('q', q); if(g) params.set('group', g); if(d) params.set('day', d); params.set('active', 'true');
-  const list = await api('/dancers?'+params.toString());
-  $('#dancersBody').innerHTML = ''; $('#dancersCards').innerHTML = '';
-  const isMob = window.matchMedia('(max-width: 720px)').matches;
-  if(!isMob){
-    const body = $('#dancersBody');
-    for(const it of list){
-      const tr = document.createElement('tr');
-      tr.dataset.did = it.id;
-      tr.innerHTML = `<td>${it.name}</td><td>${it.group_type}</td><td>${it.days}</td><td>${it.phone||''}</td>`;
-      const tdA = document.createElement('td'); tdA.className='right';
-      tdA.append(
-        btn('Editar día', ()=>editDays(it)),
-        btn('Archivar', async ()=>{ await api(`/dancers/${it.id}/archive?active=false`, {method:'PATCH'}); toast('Archivada'); loadDancers(); }),
-        btn('Eliminar', async ()=>{ if(!confirm('¿Eliminar definitivamente?')) return; await api(`/dancers/${it.id}`, {method:'DELETE'}); toast('Eliminada'); loadDancers(); }, 'ghost')
-      );
-      tr.appendChild(tdA); body.appendChild(tr);
-    }
-  }else{
-    const cards = $('#dancersCards');
-    for(const it of list){
-      const c = document.createElement('div'); c.className='card'; c.dataset.did = it.id;
-      c.innerHTML = `<h4>${it.name}</h4>
-        <div class="kv"><div>Grupo</div><div>${it.group_type}</div>
-          <div>Día</div><div>${it.days}</div>
-          <div>Teléfono</div><div>${it.phone||''}</div></div>`;
-      const actions = document.createElement('div'); actions.className='actions';
-      actions.append(
-        btn('Editar día', ()=>editDays(it)),
-        btn('Archivar', async ()=>{ await api(`/dancers/${it.id}/archive?active=false`, {method:'PATCH'}); toast('Archivada'); loadDancers(); }),
-        btn('Eliminar', async ()=>{ if(!confirm('¿Eliminar definitivamente?')) return; await api(`/dancers/${it.id}`, {method:'DELETE'}); toast('Eliminada'); loadDancers(); }, 'ghost')
-      );
-      c.appendChild(actions); cards.appendChild(c);
-    }
-  }
-}
-async function editDays(d){
-  const next = prompt(`Día asignado actual: ${d.days}
-Escribe LUNES, MIÉRCOLES o AMBOS:`, d.days);
-  if(!next) return; const val = next.toUpperCase().normalize("NFD").replace(/\p{Diacritic}/gu,"");
-  if(!['LUNES','MIERCOLES','AMBOS'].includes(val)) return alert('Valor inválido');
-  await api(`/dancers/${d.id}`, {method:'PATCH', body: JSON.stringify({days: val})});
-  toast('Día actualizado'); loadDancers();
-}
-document.getElementById('addDancer').addEventListener('click', async ()=>{
-  const name=$('#dn-name').value.trim(); const group=$('#dn-group').value; const days=$('#dn-days').value; const phone=$('#dn-phone').value.trim();
-  if(!name) return alert('Nombre requerido');
-  const b = $('#addDancer');
-  try{
-    b.disabled=true; b.textContent='Guardando...';
-    await api('/dancers', {method:'POST', body: JSON.stringify({name, group_type: group, days, phone})});
-    $('#dn-name').value=''; $('#dn-phone').value=''; toast('Danzarina agregada'); loadDancers();
-  }catch(e){ toast(e.message||'Error al agregar', false); }
-  finally{ b.disabled=false; b.textContent='Agregar'; }
-});
-document.getElementById('search').addEventListener('input', loadDancers);
-document.getElementById('filterGroup').addEventListener('change', loadDancers);
-document.getElementById('filterDay').addEventListener('change', loadDancers);
-
-/* ======= Clases (ADMIN) ======= */
-async function loadClasses(){
-  const list = await api('/classes');
-  $('#classesBody').innerHTML=''; $('#classesCards').innerHTML='';
-  const isMob = window.matchMedia('(max-width: 720px)').matches;
-  if(!isMob){
-    const body = $('#classesBody');
-    for(const c of list){
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${c.date}</td><td>${c.time}</td><td>${c.group_type}</td>`;
-      const tdA = document.createElement('td'); tdA.className='right';
-      tdA.append(btn('Eliminar', async ()=>{ if(!confirm('¿Eliminar clase?')) return; await api(`/classes/${c.id}`, {method:'DELETE'}); toast('Clase eliminada'); loadClasses(); loadRCClasses(); }));
-      tr.appendChild(tdA); body.appendChild(tr);
-    }
-  }else{
-    const cards = $('#classesCards');
-    for(const c of list){
-      const card = document.createElement('div'); card.className='card';
-      card.innerHTML = `<h4>${c.date} ${c.time}</h4><div class="kv"><div>Grupo</div><div>${c.group_type}</div></div>`;
-      const actions = document.createElement('div'); actions.className='actions';
-      actions.append(btn('Eliminar', async ()=>{ if(!confirm('¿Eliminar clase?')) return; await api(`/classes/${c.id}`, {method:'DELETE'}); toast('Clase eliminada'); loadClasses(); loadRCClasses(); }));
-      card.appendChild(actions); cards.appendChild(card);
-    }
-  }
-}
-document.getElementById('addClass').addEventListener('click', async ()=>{
-  const date=$('#cls-date').value; const time=$('#cls-time').value||'18:00'; const group=$('#cls-group').value;
-  if(!date) return alert('Fecha requerida');
-  const b = $('#addClass');
-  try{
-    b.disabled=true; b.textContent='Creando...';
-    await api('/classes', {method:'POST', body: JSON.stringify({date, time, group_type: group, notes: ''})});
-    toast('Clase creada'); loadClasses(); loadRCClasses();
-  }catch(e){ toast(e.message||'Error al crear clase', false); }
-  finally{ b.disabled=false; b.textContent='Crear clase'; }
-});
-document.getElementById('genRecurring').addEventListener('click', async ()=>{
-  const now = new Date(); const tasks = []; const b = $('#genRecurring');
-  try{
-    b.disabled=true; b.textContent='Generando...';
-    for(let i=0;i<60;i++){
-      const d = new Date(); d.setDate(now.getDate()+i);
-      const wd = d.getDay(); if(wd===1 || wd===3){
-        tasks.push(api('/classes', {method:'POST', body: JSON.stringify({date: d.toISOString().slice(0,10), time: '18:00', group_type: 'TODOS', notes: ''})}));
-      }
-    }
-    await Promise.allSettled(tasks); toast('Generadas Lunes/Miércoles por 60 días');
-    loadClasses(); loadRCClasses();
-  }catch(e){ toast(e.message||'Error al generar', false); }
-  finally{ b.disabled=false; b.textContent='Generar Lunes/Miércoles (60 días)'; }
-});
-
-/* ======= Pasar lista (ADMIN) ======= */
-let RC_CLASSES = [];
-async function loadRCClasses(){ 
-  RC_CLASSES = await api('/classes'); 
-  const sel=$('#rc-class'); sel.innerHTML='';
-  for(const c of RC_CLASSES){ const opt=document.createElement('option'); opt.value=c.id; opt.textContent=`${c.date} ${c.time} (${c.group_type})`; sel.appendChild(opt); }
-  updateRollcallDay(); renderRollcall();
-}
-function dayOf(dateStr){ const d = new Date(dateStr+'T00:00:00'); const wd = d.getDay(); return wd===1 ? 'LUNES' : (wd===3 ? 'MIERCOLES' : ''); }
-function updateRollcallDay(){
-  const cid = $('#rc-class').value;
-  const klass = RC_CLASSES.find(x=>x.id===cid);
-  if(!klass){ $('#rc-day').textContent='—'; $('#rc-filter').removeAttribute('disabled'); return ''; }
-  const day = dayOf(klass.date);
-  $('#rc-day').textContent = day || 'OTRO DÍA';
-  if(klass.group_type && klass.group_type !== 'TODOS'){
-    $('#rc-filter').value = klass.group_type;
-    $('#rc-filter').setAttribute('disabled', 'disabled');
-  } else {
-    $('#rc-filter').removeAttribute('disabled');
-  }
-  return day;
-}
-document.getElementById('rc-class').addEventListener('change', ()=>{ updateRollcallDay(); renderRollcall(); });
-document.getElementById('rc-filter').addEventListener('change', ()=>{ renderRollcall(); });
-document.getElementById('rc-status-filter').addEventListener('change', ()=>{ renderRollcall(); });
-document.getElementById('rc-search').addEventListener('input', ()=>{ renderRollcall(); });
-
-function setSummary({p,t,a,j,total}){ const pct = total? Math.round((p/total)*100):0; $('#summary').innerHTML = `
-  <span class="chip">Presente: <b>${p}</b></span>
-  <span class="chip">Tarde: <b>${t}</b></span>
-  <span class="chip">Ausente: <b>${a}</b></span>
-  <span class="chip">Justificada: <b>${j}</b></span>
-  <span class="chip">Total: <b>${total}</b></span>
-  <span class="chip">Asistencia: <b>${pct}%</b></span>`; }
-function statusPill(val){ const cls = val||''; const map = {P:'s-P',T:'s-T',A:'s-A',J:'s-J'}; return `<span class="pill ${map[cls]||''}">${val||'—'}</span>`; }
-function selectHTML(val){ return `<select class="rc-status">
-  <option value="" ${val===''?'selected':''}>—</option>
-  <option value="P" ${val==='P'?'selected':''}>Presente</option>
-  <option value="T" ${val==='T'?'selected':''}>Tarde</option>
-  <option value="A" ${val==='A'?'selected':''}>Ausente</option>
-  <option value="J" ${val==='J'?'selected':''}>Justificada</option>
-</select>`; }
-
-async function renderRollcall(){
-  const classId = $('#rc-class').value; if(!classId) return; 
-  const klass = RC_CLASSES.find(x=>x.id===classId) || {};
-  const day = klass?.date ? dayOf(klass.date) : '';
-  const uiGroup = $('#rc-filter').value || '';
-  const effectiveGroup = $('#rc-filter').disabled ? (klass.group_type || '') : uiGroup;
-  const stateFilter = $('#rc-status-filter').value || '';
-
-  const params = new URLSearchParams({active:'true'});
-  if (effectiveGroup) params.set('group', effectiveGroup);
-  if (day) params.set('day', day);
-
-  const dancersRaw = await api('/dancers?' + params.toString());
-  const dancersSrv = effectiveGroup ? dancersRaw.filter(x => x.group_type === effectiveGroup) : dancersRaw;
-
-  const att = await api('/attendance?class_id=' + classId);
-  const byId = Object.fromEntries(att.map(r=>[r.dancer_id, r]));
-
-  const q = ($('#rc-search').value || '').toLowerCase();
-  let list = dancersSrv.map(d => ({...d, cur: byId[d.id] || {status:'A', note:''}}));
-  if(q) list = list.filter(x => (x.name || '').toLowerCase().includes(q));
-  if(stateFilter) list = list.filter(x => (x.cur.status||'') === stateFilter);
-
-  $('#rcBody').innerHTML=''; $('#rcCards').innerHTML='';
-  let sum = {p:0,t:0,a:0,j:0,total:list.length};
-  const isMob = window.matchMedia('(max-width: 720px)').matches;
-
-  if(!isMob){
-    const body = $('#rcBody');
-    for(const d of list){
-      const cur = d.cur;
-      if(cur.status==='P') sum.p++; else if(cur.status==='T') sum.t++; else if(cur.status==='J') sum.j++; else sum.a++;
-
-      const tr = document.createElement('tr'); tr.dataset.did = d.id;
-      if(cur.status) tr.classList.add('highlight-'+cur.status);
-      tr.innerHTML = `<td>${d.name}</td><td>${d.group_type}</td>`;
-      const tdS = document.createElement('td'); tdS.innerHTML = statusPill(cur.status) + ' ' + selectHTML(cur.status);
-      const tdN = document.createElement('td'); tdN.innerHTML = `<input type="text" class="rc-note" value="${cur.note||''}" placeholder="Nota (opcional)">`;
-      const tdA = document.createElement('td'); tdA.className='right';
-      const b = document.createElement('button'); b.className='btn'; b.textContent='Guardar';
-      b.onclick = async ()=>{ try{
-          b.disabled=true; b.textContent='Guardando...';
-          const status = tdS.querySelector('select').value; const note = tdN.querySelector('input').value.trim();
-          await api('/attendance', {method:'POST', body: JSON.stringify({class_id: classId, dancer_id: d.id, status, note})});
-          toast('Guardado'); renderRollcall();
-        }catch(e){ toast(e.message||'Error al guardar', false);} finally{ b.disabled=false; b.textContent='Guardar'; } };
-      tdA.append(b); tr.append(tdS, tdN, tdA); body.appendChild(tr);
-    }
-  }else{
-    const cards = $('#rcCards');
-    for(const d of list){
-      const cur = d.cur;
-      if(cur.status==='P') sum.p++; else if(cur.status==='T') sum.t++; else if(cur.status==='J') sum.j++; else sum.a++;
-
-      const card = document.createElement('div'); card.className='card'; card.dataset.did = d.id;
-      card.innerHTML = `<h4>${d.name}</h4>
-        <div class="kv">
-          <div>Grupo</div><div>${d.group_type}</div>
-          <div>Estado</div><div class="slot-status">${statusPill(cur.status)} ${selectHTML(cur.status)}</div>
-          <div>Nota</div><div><input type="text" class="rc-note" value="${cur.note||''}" placeholder="Nota (opcional)"></div>
-        </div>`;
-      const actions = document.createElement('div'); actions.className='actions';
-      const bm = document.createElement('button'); bm.className='btn'; bm.textContent='Guardar';
-      bm.onclick = async ()=>{
-        const status = card.querySelector('.slot-status select').value;
-        const note = card.querySelector('.rc-note').value.trim();
-        await api('/attendance', {method:'POST', body: JSON.stringify({class_id: classId, dancer_id: d.id, status, note})});
-        toast('Guardado'); renderRollcall();
-      };
-      actions.append(bm); card.appendChild(actions); cards.appendChild(card);
-    }
-  }
-  setSummary(sum);
-}
-document.getElementById('markAllP').addEventListener('click', ()=>bulkUpdate('P'));
-document.getElementById('markAllA').addEventListener('click', ()=>bulkUpdate('A'));
-document.getElementById('markAllJ').addEventListener('click', ()=>bulkUpdate('J'));
-document.getElementById('markAllT').addEventListener('click', ()=>bulkUpdate('T'));
-
-// NUEVO: Guardar todo (estado y nota de cada fila/tarjeta)
-document.getElementById('saveAll').addEventListener('click', saveAllChanges);
-async function saveAllChanges(){
-  const classId = document.getElementById('rc-class').value;
-  if(!classId){ alert('Selecciona una clase'); return; }
-  const btn = document.getElementById('saveAll');
-  btn.disabled = true; btn.textContent = 'Guardando...';
-  try{
-    const rows = [...document.querySelectorAll('#rcBody tr'), ...document.querySelectorAll('#rcCards .card')];
-    const tasks = rows.map(el => {
-      const dancerId = el.dataset.did;
-      const statusSel = el.querySelector('select.rc-status') || el.querySelector('.slot-status select') || el.querySelector('select');
-      const status = statusSel ? statusSel.value : '';
-      const note = (el.querySelector('.rc-note')?.value || '').trim();
-      return api('/attendance', {method:'POST', body: JSON.stringify({class_id: classId, dancer_id: dancerId, status, note})});
-    });
-    await Promise.allSettled(tasks);
-    toast('Todo guardado');
-    await renderRollcall();
-  }catch(e){
-    toast(e.message || 'Error al guardar todo', false);
-  }finally{
-    btn.disabled = false; btn.textContent = 'Guardar todo';
-  }
-}
-
-async function bulkUpdate(status){
-  const classId = $('#rc-class').value; if(!classId) return alert('Selecciona clase');
-  const mapText = {P:'Todas Presente', A:'Todas Ausente', J:'Todas Justificada', T:'Todas Tarde'};
-  const btnSel = {P:'#markAllP',A:'#markAllA',J:'#markAllJ',T:'#markAllT'}[status];
-  const b = document.querySelector(btnSel); b.disabled=true; b.textContent='Procesando...';
-
-  try{
-    const rows = document.querySelectorAll('#rcBody tr, #rcCards .card');
-    const tasks = Array.from(rows).map(el=>{
-      const dancerId = el.dataset.did;
-      const note = (el.querySelector('.rc-note')?.value || '').trim();
-      return api('/attendance', {method:'POST', body: JSON.stringify({class_id: document.querySelector('#rc-class').value, dancer_id: dancerId, status, note})});
-    });
-    await Promise.allSettled(tasks);
-    toast('Actualizado en bloque');
-    await renderRollcall();
-  }catch(e){ toast(e.message||'Error en actualización masiva', false); }
-  finally{ b.disabled=false; b.textContent=mapText[status]; }
-}
-
-/* ======= Reportes (ADMIN y REPORT) ======= */
-function todayStr(){ return new Date().toISOString().slice(0,10); }
-document.getElementById('rp-date').value = todayStr();
-document.getElementById('rr-start').value = todayStr();
-document.getElementById('rr-end').value = todayStr();
-
-async function loadReportPeople(){
-  try{
-    let list = [];
-    if(SESSION.role === 'ADMIN'){
-      list = await api('/dancers?active=true'); // como antes
-    }else{
-      // REPORT solo lectura
-      list = await api('/reports/people');
-    }
-    const sel = document.getElementById('rr-person');
-    const groupSel = document.getElementById('rr-group').value;
-    sel.innerHTML = '<option value="">Todas</option>';
-    const filtered = groupSel ? list.filter(d => d.group_type === groupSel) : list;
-    for(const d of filtered){
-      const opt = document.createElement('option');
-      opt.value = d.id;
-      opt.textContent = `${d.name} — ${d.group_type}`;
-      sel.appendChild(opt);
-    }
-  }catch(e){
-    // Si algo falla, dejamos la lista vacía
-  }
-}
-document.getElementById('rr-group').addEventListener('change', ()=>{ loadReportPeople(); });
-
-/* ===== CAMBIO: usar descarga autenticada en lugar de window.open ===== */
-document.getElementById('rp-csv').addEventListener('click', ()=>{ 
-  const d=document.getElementById('rp-date').value; 
-  if(!d) return alert('Elige fecha'); 
-  downloadFromApi(`/reports/daily.csv?date_str=${d}`, `reporte_${d}.csv`); 
-});
-document.getElementById('rp-pdf').addEventListener('click', ()=>{ 
-  const d=document.getElementById('rp-date').value; 
-  if(!d) return alert('Elige fecha'); 
-  downloadFromApi(`/reports/daily.pdf?date_str=${d}`, `reporte_${d}.pdf`); 
-});
-function buildRangeQS(){
-  const start = document.getElementById('rr-start').value; const end = document.getElementById('rr-end').value;
-  if(!start || !end){ alert('Selecciona inicio y fin'); return null; }
-  const p = new URLSearchParams({start, end});
-  const g=document.getElementById('rr-group').value; if(g) p.set('group', g);
-  const dy=document.getElementById('rr-day').value; if(dy) p.set('day', dy);
-  const st=document.getElementById('rr-status').value; if(st) p.set('status', st);
-  const person=document.getElementById('rr-person')?.value; if(person) p.set('dancer_id', person);
-  const q=document.getElementById('rr-q')?.value?.trim(); if(q) p.set('q', q);
-  return p.toString();
-}
-document.getElementById('rr-csv').addEventListener('click', ()=>{ 
-  const qs = buildRangeQS(); if(!qs) return; 
-  downloadFromApi(`/reports/range.csv?${qs}`, 'reporte_rango.csv'); 
-});
-document.getElementById('rr-pdf').addEventListener('click', ()=>{ 
-  const qs = buildRangeQS(); if(!qs) return; 
-  downloadFromApi(`/reports/range.pdf?${qs}`, 'reporte_rango.pdf'); 
-});
-
-/* ======= Usuarios (solo ADMIN) ======= */
-async function loadUsers(){
-  if(SESSION.role!=='ADMIN'){ return; }
-  try{
-    const list = await api('/admin/users');
-    const body = $('#u-body'); body.innerHTML = '';
-    for(const u of list){
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${u.username}</td><td>${u.role}</td>`;
-      const tdA = document.createElement('td'); tdA.className='right';
-      const bPw = btn('Cambiar clave', async ()=>{
-        const np = prompt('Nueva contraseña para '+u.username+':');
-        if(!np) return;
-        await api(`/admin/users/${u.id}`, {method:'PATCH', body: JSON.stringify({password: np})});
-        toast('Contraseña actualizada');
-      });
-      const bRole = btn('Cambiar rol', async ()=>{
-        const nr = prompt("Nuevo rol para "+u.username+" (ADMIN o REPORT):", u.role);
-        if(!nr) return;
-        await api(`/admin/users/${u.id}`, {method:'PATCH', body: JSON.stringify({role: nr.toUpperCase()})});
-        toast('Rol actualizado'); loadUsers();
-      });
-      const bDel = btn('Eliminar', async ()=>{
-        if(!confirm('¿Eliminar usuario '+u.username+'?')) return;
-        await api(`/admin/users/${u.id}`, {method:'DELETE'});
-        toast('Usuario eliminado'); loadUsers();
-      }, 'ghost');
-      tdA.append(bPw, bRole, bDel);
-      tr.appendChild(tdA); body.appendChild(tr);
-    }
-  }catch(e){
-    toast('No autorizado', false);
-  }
-}
-document.getElementById('u-create').addEventListener('click', async ()=>{
-  const username = document.getElementById('u-username').value.trim();
-  const password = document.getElementById('u-password').value;
-  const role = document.getElementById('u-role').value;
-  if(!username || !password) return alert('Completa usuario y contraseña');
-  try{
-    await api('/admin/users', {method:'POST', body: JSON.stringify({username, password, role})});
-    document.getElementById('u-username').value=''; document.getElementById('u-password').value='';
-    toast('Usuario creado'); loadUsers();
-  }catch(e){ toast(e.message||'Error al crear', false); }
-});
-
-/* ======= Boot ======= */
-async function boot(){
-    await getMe();
-    // Por defecto Reportes activo; si ADMIN puedes cambiar
-    activateTab('report');
-}
-
-// Cerrar sesión contra el backend y redirigir al login hospedado en Pages
-document.getElementById('logoutForm')?.addEventListener('submit', async (e) => {
+  <script>
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
     try {
-        await fetch(`${API_BASE}/auth/logout`, { method: 'POST', credentials: 'include' });
-    } catch (err) { /* ignoramos errores de red */ }
-    location.href = `${GH_BASE}/login.html`;
-});
+      const res = await fetch(API_BASE + '/auth/login', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ username, password })
+      });
 
-boot();
-
-</script>
+      if (res.ok) {
+        window.location.href = `${GH_BASE}/index.html`;
+      } else {
+        const txt = await res.text();
+        document.getElementById('errorMsg').innerText = txt || 'Usuario o contraseña incorrectos';
+      }
+    } catch (err) {
+      document.getElementById('errorMsg').innerText = err?.message || 'Error de red';
+    }
+  });
+  </script>
 </body>
 </html>
