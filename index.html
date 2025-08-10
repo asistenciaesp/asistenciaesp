@@ -343,13 +343,14 @@ async function loadDancers(){
   }
 }
 async function editDays(d){
-  const next = prompt(`Día asignado actual: ${d.days}\nEscribe LUNES, MIÉRCOLES o AMBOS:`, d.days);
+  const next = prompt(`Día asignado actual: ${d.days}
+Escribe LUNES, MIÉRCOLES o AMBOS:`, d.days);
   if(!next) return; const val = next.toUpperCase().normalize("NFD").replace(/\p{Diacritic}/gu,"");
   if(!['LUNES','MIERCOLES','AMBOS'].includes(val)) return alert('Valor inválido');
   await api(`/dancers/${d.id}`, {method:'PATCH', body: JSON.stringify({days: val})});
   toast('Día actualizado'); loadDancers();
 }
-$('#addDancer').addEventListener('click', async ()=>{
+document.getElementById('addDancer').addEventListener('click', async ()=>{
   const name=$('#dn-name').value.trim(); const group=$('#dn-group').value; const days=$('#dn-days').value; const phone=$('#dn-phone').value.trim();
   if(!name) return alert('Nombre requerido');
   const b = $('#addDancer');
@@ -360,9 +361,9 @@ $('#addDancer').addEventListener('click', async ()=>{
   }catch(e){ toast(e.message||'Error al agregar', false); }
   finally{ b.disabled=false; b.textContent='Agregar'; }
 });
-$('#search').addEventListener('input', loadDancers);
-$('#filterGroup').addEventListener('change', loadDancers);
-$('#filterDay').addEventListener('change', loadDancers);
+document.getElementById('search').addEventListener('input', loadDancers);
+document.getElementById('filterGroup').addEventListener('change', loadDancers);
+document.getElementById('filterDay').addEventListener('change', loadDancers);
 
 /* ======= Clases (ADMIN) ======= */
 async function loadClasses(){
@@ -389,7 +390,7 @@ async function loadClasses(){
     }
   }
 }
-$('#addClass').addEventListener('click', async ()=>{
+document.getElementById('addClass').addEventListener('click', async ()=>{
   const date=$('#cls-date').value; const time=$('#cls-time').value||'18:00'; const group=$('#cls-group').value;
   if(!date) return alert('Fecha requerida');
   const b = $('#addClass');
@@ -400,7 +401,7 @@ $('#addClass').addEventListener('click', async ()=>{
   }catch(e){ toast(e.message||'Error al crear clase', false); }
   finally{ b.disabled=false; b.textContent='Crear clase'; }
 });
-$('#genRecurring').addEventListener('click', async ()=>{
+document.getElementById('genRecurring').addEventListener('click', async ()=>{
   const now = new Date(); const tasks = []; const b = $('#genRecurring');
   try{
     b.disabled=true; b.textContent='Generando...';
@@ -439,10 +440,10 @@ function updateRollcallDay(){
   }
   return day;
 }
-$('#rc-class').addEventListener('change', ()=>{ updateRollcallDay(); renderRollcall(); });
-$('#rc-filter').addEventListener('change', ()=>{ renderRollcall(); });
-$('#rc-status-filter').addEventListener('change', ()=>{ renderRollcall(); });
-$('#rc-search').addEventListener('input', ()=>{ renderRollcall(); });
+document.getElementById('rc-class').addEventListener('change', ()=>{ updateRollcallDay(); renderRollcall(); });
+document.getElementById('rc-filter').addEventListener('change', ()=>{ renderRollcall(); });
+document.getElementById('rc-status-filter').addEventListener('change', ()=>{ renderRollcall(); });
+document.getElementById('rc-search').addEventListener('input', ()=>{ renderRollcall(); });
 
 function setSummary({p,t,a,j,total}){ const pct = total? Math.round((p/total)*100):0; $('#summary').innerHTML = `
   <span class="chip">Presente: <b>${p}</b></span>
@@ -602,7 +603,7 @@ async function loadReportPeople(){
     }
     const sel = document.getElementById('rr-person');
     const groupSel = document.getElementById('rr-group').value;
-    sel.innerHTML = '<option value=\"\">Todas</option>';
+    sel.innerHTML = '<option value="">Todas</option>';
     const filtered = groupSel ? list.filter(d => d.group_type === groupSel) : list;
     for(const d of filtered){
       const opt = document.createElement('option');
